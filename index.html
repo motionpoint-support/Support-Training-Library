@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support Training Hub</title>
+<meta name="description" content="MotionPoint Customer Support new agent training, in order.">
+<style>
+:root{
+  --bg:#F3F6FB; --surface:#FFFFFF; --ink:#0B2545; --muted:#3B4F6B; --line:#DCE1E8;
+  --blue:#1466F0; --blue-soft:#DCE7F7; --green:#2F7A22; --green-soft:#E5F4DE;
+  --orange:#C2410C; --orange-soft:#FCE3CC; --navy:#0B2545; --navy-soft:#E3E8F0;
+  --purple:#5867E8; --purple-soft:#E8EAFD; --chip:#FFFFFF; --shadow:0 6px 18px rgba(11,37,69,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0E1B2E; --surface:#15253D; --ink:#EAF0F8; --muted:#A9B8CC; --line:#26385A;
+    --blue:#6EA8FF; --blue-soft:#1B3358; --green:#8FD16F; --green-soft:#1D3A22; --orange:#FFA06B; --orange-soft:#3D2717;
+    --navy:#C9D6E8; --navy-soft:#22324E; --purple:#A3ACFF; --purple-soft:#26294D; --chip:#15253D; --shadow:0 6px 18px rgba(0,0,0,.3);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;line-height:1.45}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+header{padding:40px 0 18px}
+.eyebrow{font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+h1{margin:8px 0 6px;font-size:clamp(30px,5vw,44px);line-height:1.1}
+.lede{margin:0;font-size:18px;color:var(--muted);max-width:760px}
+.order{margin-top:16px;display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-weight:700;font-size:15px}
+.order b{color:var(--blue)}
+.tools{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 0 12px;border-bottom:1px solid var(--line)}
+.search{position:relative}
+.search input{width:100%;height:52px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--ink);font-size:17px;padding:0 48px 0 46px;outline:none}
+.search input:focus{border-color:var(--blue)}
+.search input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+.search svg{position:absolute;left:14px;top:15px;color:var(--muted)}
+.search .clear{position:absolute;right:8px;top:8px;width:36px;height:36px;border:none;border-radius:10px;background:transparent;color:var(--muted);font-size:22px;cursor:pointer;display:none}
+.search .clear.on{display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer;min-height:40px}
+.chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.count{margin-top:10px;font-size:14px;color:var(--muted)}
+main{padding:20px 0 40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{position:relative;display:flex;gap:14px;align-items:flex-start;padding:16px;border-radius:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);text-decoration:none;transition:transform .15s ease,border-color .15s ease}
+.card:hover,.card:focus-visible{transform:translateY(-2px);border-color:var(--blue);outline:none}
+.num{flex-shrink:0;width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;background:var(--navy)}
+.card[data-topic="start"] .num{background:#2F7A22}
+.card[data-topic="sf"] .num{background:#5867E8}
+.card[data-topic="cases"] .num{background:#C2410C}
+.card[data-topic="proc"] .num{background:#0B2545}
+.card[data-topic="tools"] .num{background:#1466F0}
+@media (prefers-color-scheme: dark){.card[data-topic="proc"] .num{background:#3B5B8C}}
+.body{min-width:0}
+.title{margin:0;font-size:17px;font-weight:800;line-height:1.25}
+.desc{margin:6px 0 10px;font-size:14px;color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px}
+.t-start{background:var(--green-soft);color:var(--green)}
+.t-sf{background:var(--purple-soft);color:var(--purple)}
+.t-cases{background:var(--orange-soft);color:var(--orange)}
+.t-proc{background:var(--navy-soft);color:var(--navy)}
+.t-tools{background:var(--blue-soft);color:var(--blue)}
+.here{background:#FFE45C;color:#0B2545}
+mark{background:#FFE45C;color:#0B2545;border-radius:3px;padding:0 2px}
+.empty{display:none;padding:40px 16px;text-align:center;color:var(--muted);font-size:17px}
+.empty.on{display:block}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font-size:15px}
+footer b{color:var(--ink)}
+@media (max-width:560px){.grid{grid-template-columns:1fr}.order{font-size:14px}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="eyebrow">MotionPoint Customer Support &middot; New Agent Training</div>
+  <h1>Support Training Hub</h1>
+  <p class="lede">Every training for new Support agents, in one place.</p>
+  <div class="order"><b>Watch these in order.</b> Each one builds on the one before.</div>
+</header>
+
+<div class="tools">
+  <div class="wrap">
+    <div class="search">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+      <label for="q" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search trainings</label>
+      <input id="q" type="search" placeholder="Search by keyword, for example: Bcc, PID, outage, Express, Charles" autocomplete="off">
+      <button class="clear" id="clear" type="button" aria-label="Clear search">&times;</button>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Filter by topic"></div>
+    <div class="count" id="count" aria-live="polite"></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty">No trainings match that search. Try another keyword, or clear the filters.</div>
+</main>
+
+<footer class="wrap">
+  <b>If in doubt, ask:</b> the Support team, Tier II or the Director of Customer Support.
+</footer>
+
+<script>
+const BASE = 'https://motionpoint-support.github.io/';
+const TOPICS = { start: 'Getting started', sf: 'Salesforce', cases: 'Case types', proc: 'Procedures', tools: 'Tools & tech' };
+const T = [
+ ['Welcome-to-Customer-Support', 'Welcome to Customer Support', 'Who we are, how Support works, and what to expect in your first weeks.', 'start', 'onboarding new hire team role customer advocate introduction'],
+ ['Proxy-explained', 'How the Proxy Works', 'How MotionPoint&rsquo;s translation proxy takes the origin site and serves the translated site.', 'tools', 'proxy origin localized translated site request response technology'],
+ ['support-case-animation', 'How a Support Case Begins', 'How a customer request becomes a case, and the first steps Support takes.', 'start', 'case begins intake email acknowledge route new case lifecycle'],
+ ['Support-DOs-and-DONTs', 'The DOs and DON&rsquo;Ts of Support', 'Mindset, teamwork, case etiquette, communication, being resourceful, hand-offs and proactivity.', 'start', 'etiquette notes next steps sarcasm teamwork volunteer client note report resourceful hand-off milestones priority critical express teams'],
+ ['Reporting-Technical-Issues-guidelines', 'Reporting Technical Issues', 'Urgent vs non-urgent, who to contact, the 15-minute rule, and keeping customer work moving.', 'start', 'it compass staffing partner hardware software vpn laptop escalate 15 minutes backup tier ii after hours'],
+ ['Accounts-Entitlements-guidelines', 'Accounts, Projects and Entitlements', 'Accounts, Business Entities, Related Contacts, and Standard vs Beyond Words 24/7.', 'sf', 'account business entity project related contacts entitlement standard beyond words 24/7 after hours emergency contact'],
+ ['MyDay-time-guidelines', 'Logging Time in My Day', 'How to log training and other time outside of cases, and why utilization matters.', 'sf', 'my day time log utilization 90% training meetings productivity'],
+ ['My-List-view-Queue-in-SF', 'My List View Queue', 'Using your Salesforce list view to see and work your queue of cases.', 'sf', 'list view queue salesforce my cases new in progress filter'],
+ ['Billing-guidelines', 'Billing Your Support Time', 'Billable vs not-billable time, and how to bill your Support work correctly.', 'proc', 'billing billable non billable time hours invoice'],
+ ['Offline-cases-guidelines', 'Handling Offline Cases', 'How to work document translation (Offline) cases and hand them to the Offline TAM.', 'cases', 'offline document translation files tam case type'],
+ ['Misalignment-guidelines', 'Misalignment Cases', 'The origin test, routing to PE, text in images to the TAM, and Express handling.', 'cases', 'misalignment layout css origin test pe image text tam express'],
+ ['Translation-Cases', 'Translation Cases', 'Pushing content, finding the PID, the note to the TAM, and pending and due dates.', 'cases', 'translation push mpactionid pid tam note pending due date express'],
+ ['How-to-Create-case-guidelines', 'Creating a Case in Salesforce', 'How to open a new case in Salesforce and fill in the right fields.', 'sf', 'create case new case salesforce fields utility bar'],
+ ['Pushing-Finding-content-with-Charles', 'Pushing Content with Charles', 'Use Charles to push hard-to-reach content, find it in ControlCenter, and hand it off.', 'tools', 'charles rewrite mpactionid 16408 controlcenter pid queue json ctrl+f pe tam'],
+ ['Spike-cases', 'Handling Spike Cases', 'Unusual translation queue volume, getting the Translation Budget Approver&rsquo;s approval, and copying the CXM.', 'cases', 'spike queue volume budget approver cost approval cxm tam'],
+ ['QA-cases-to-SU', 'Why QA Sends You Cases', 'Automation cases for origin-site defects, and customer-action cases after PE or TAM review.', 'cases', 'qa automation origin site defects customer action'],
+ ['Outage-cases-and-process-guidelines', 'Outage Cases from PE', 'The outage procedure for cases PE sends to Support, including P1 for Tier 1 customers.', 'cases', 'outage p1 tier 1 pe procedure down site'],
+ ['VS-email-guidelines', 'VS Email Cases', 'Acknowledge, match the due date, find the target language and requester, and escalate Express.', 'cases', 'vs email due date milestone target requested by tpm express tam'],
+ ['cdn-explained', 'CDN Explained', 'What a CDN is, and how it affects what customers see on their translated site.', 'tools', 'cdn cache content delivery network cloudfront edge'],
+ ['Translation-memory-search-guidelines', 'Translation Memory Search', 'How to search the translation memory to find existing translations.', 'tools', 'translation memory tm search segment'],
+ ['Webloc-case-flows-advanced', 'Advanced Webloc Case Flows', 'Advanced case flows for Webloc cases, and who handles each step.', 'cases', 'webloc case flow advanced routing'],
+ ['Call-invites-guidelines', 'Call Invites in Salesforce', 'Find the date and time in the .ics file, tell the team, decide if Support joins, and document it.', 'sf', 'call invite ics outlook accept teams discovery questions join'],
+ ['Email-Shift-Guidelines', 'The Email Shift', 'Your email shift duties: emails, calls, @support in Teams, and the Client Note report.', 'proc', 'email shift calls cold transfer @support teams pending client response report multitask'],
+ ['sf-emergency-notification-training', 'Salesforce Outage: Notify Emergency Contacts', 'When Salesforce is down: send the emergency notice from support@ with the contacts list in Bcc.', 'proc', 'salesforce outage down emergency contacts bcc distribution list template outlook'],
+ ['Billing-Reconciliation-for-Invoices', 'Billing Invoice Reconciliation', 'How to reconcile billing for customer invoices.', 'proc', 'billing invoice reconciliation'],
+ ['PDR-guidelines', 'When a Case Becomes a PDR', 'When a case should become a PDR (post delivery request), and handing it to the CXM or PM.', 'cases', 'pdr post delivery request project pm cxm scope'],
+ ['MAP-procedure', 'MAP Calls', 'The MAP call procedure and Support&rsquo;s part in it.', 'proc', 'map call procedure meeting'],
+ ['On-Call-Procedure', 'On-Call Procedure', 'How on-call works, what to do when you&rsquo;re on call, and who to reach.', 'proc', 'on call after hours weekend backup express critical'],
+ ['Directive-tags', 'Directive Tags Explained', 'What directive tags are, and how they control translation on a page.', 'tools', 'directive tags html translate notranslate'],
+ ['Project-Scope', 'Project Scope', 'What&rsquo;s in a customer&rsquo;s project scope, and how to check it.', 'proc', 'scope project in scope out of scope'],
+ ['Live-edit-guidelines', 'Live Edit', 'How Live Edit works for making and reviewing translation changes.', 'tools', 'live edit translation change'],
+ ['Memory-Manager', 'Memory Manager', 'Using Memory Manager to find and manage translations.', 'tools', 'memory manager translations segments'],
+ ['AppA-update-guidelines', 'Updating the App A', 'Scope rules A to D, the PE, TAM and QA flow, and adding a clean row to the App A file.', 'proc', 'app a appendix scope rule a b c d excel sharepoint warnings quote estimate pdr change log'],
+ ['API-Guidelines', 'Finding API Job IDs', 'Find Translation API job IDs, read their status, troubleshoot, and route to PE first.', 'tools', 'api job id translation api tpm queued rejected pe tam headers api key'],
+];
+const items = T.map((t, i) => ({ n: i + 1, slug: t[0], title: t[1], desc: t[2], topic: t[3], kw: t[4] }));
+const grid = document.getElementById('grid'), q = document.getElementById('q'), chips = document.getElementById('chips'),
+      count = document.getElementById('count'), empty = document.getElementById('empty'), clear = document.getElementById('clear');
+let topic = 'all';
+const plain = (s) => { const d = document.createElement('div'); d.innerHTML = s; return d.textContent; };
+items.forEach((it) => { it.ptitle = plain(it.title); it.pdesc = plain(it.desc); it.hay = (it.ptitle + ' ' + it.pdesc + ' ' + it.kw + ' ' + TOPICS[it.topic]).toLowerCase(); });
+const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const hl = (text, words) => {
+  let out = esc(text);
+  words.forEach((w) => { if (w.length < 2) return; const re = new RegExp('(' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'); out = out.replace(re, '<mark>$1</mark>'); });
+  return out;
+};
+['all', ...Object.keys(TOPICS)].forEach((k) => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'chip'; b.dataset.k = k;
+  b.textContent = k === 'all' ? 'All trainings' : TOPICS[k];
+  b.setAttribute('aria-pressed', k === topic ? 'true' : 'false');
+  b.addEventListener('click', () => { topic = k; [...chips.children].forEach((c) => c.setAttribute('aria-pressed', c.dataset.k === k ? 'true' : 'false')); render(); });
+  chips.appendChild(b);
+});
+function render() {
+  const words = q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  clear.classList.toggle('on', q.value.length > 0);
+  const shown = items.filter((it) => (topic === 'all' || it.topic === topic) && words.every((w) => it.hay.includes(w)));
+  grid.innerHTML = shown.map((it) =>
+    '<a class="card" data-topic="' + it.topic + '" href="' + BASE + it.slug + '/" target="_blank" rel="noopener">' +
+      '<span class="num" aria-label="Training ' + it.n + '">' + it.n + '</span>' +
+      '<span class="body"><h2 class="title">' + hl(it.ptitle, words) + '</h2>' +
+      '<p class="desc">' + hl(it.pdesc, words) + '</p>' +
+      '<span class="tags">' + (it.n === 1 ? '<span class="tag here">Start here</span>' : '') + '<span class="tag t-' + it.topic + '">' + TOPICS[it.topic] + '</span></span></span>' +
+    '</a>').join('');
+  empty.classList.toggle('on', shown.length === 0);
+  count.textContent = shown.length === items.length ? items.length + ' trainings' : 'Showing ' + shown.length + ' of ' + items.length + ' trainings';
+}
+q.addEventListener('input', render);
+clear.addEventListener('click', () => { q.value = ''; render(); q.focus(); });
+document.addEventListener('keydown', (e) => { if (e.key === '/' && document.activeElement !== q) { e.preventDefault(); q.focus(); } });
+render();
+</script>
+</body>
+</html>
