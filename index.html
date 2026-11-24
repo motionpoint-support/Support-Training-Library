@@ -64,6 +64,14 @@ main{padding:20px 0 40px}
 .t-proc{background:var(--navy-soft);color:var(--navy)}
 .t-tools{background:var(--blue-soft);color:var(--blue)}
 .here{background:#FFE45C;color:#0B2545}
+.card.grad{grid-column:1/-1;background:#0B2545;border-color:#0B2545;color:#FFFFFF;padding:22px 24px;align-items:center}
+.card.grad .num.cap{width:64px;height:64px;border-radius:18px;background:#FFE45C;color:#0B2545}
+.card.grad .title{font-size:22px;color:#FFFFFF}
+.card.grad .desc{color:#D6E0EE;font-size:15px;max-width:760px}
+.gradtag{background:#FFE45C;color:#0B2545}
+.gradcta{display:inline-block;margin-top:2px;font-weight:800;font-size:15px;color:#FFE45C}
+.card.grad:hover,.card.grad:focus-visible{border-color:#FFE45C}
+.card.grad mark{background:#FFE45C}
 mark{background:#FFE45C;color:#0B2545;border-radius:3px;padding:0 2px}
 .empty{display:none;padding:40px 16px;text-align:center;color:var(--muted);font-size:17px}
 .empty.on{display:block}
@@ -104,7 +112,7 @@ footer b{color:var(--ink)}
 
 <script>
 const BASE = 'https://motionpoint-support.github.io/';
-const TOPICS = { start: 'Getting started', sf: 'Salesforce', cases: 'Case types', proc: 'Procedures', tools: 'Tools & tech' };
+const TOPICS = { start: 'Getting started', sf: 'Salesforce', cases: 'Case types', proc: 'Procedures', tools: 'Tools & tech', grad: 'Graduation' };
 const T = [
  ['Welcome-to-Customer-Support', 'Welcome to Customer Support', 'Who we are, how Support works, and what to expect in your first weeks.', 'start', 'onboarding new hire team role customer advocate introduction'],
  ['Teams-Status-Etiquette', 'Teams Status and Daily Etiquette', 'Set Available when you start, post Lunch, calls and restarts in Customer Support Internal, the handbook break rules, and why the right status prevents double work.', 'start', 'teams status available away lunch break etiquette call back restart late absent handbook visibility channel customer support internal'],
@@ -149,6 +157,7 @@ const T = [
  ['API-Guidelines', 'Finding API Job IDs', 'Find Translation API job IDs, read their status, troubleshoot, and route to PE first.', 'tools', 'api job id translation api tpm queued rejected pe tam headers api key'],
  ['Security-Issues-to-SecOps', 'Security Issues Go to SecOps', 'Security and vulnerability reports go to SecOps, not a PE queue: emailing secops@motionpoint.com with the CXM copied, Pending Internal, a new Teams group chat per case, and origin-site vulnerabilities.', 'cases', 'security vulnerability secops nginx java scan pen test cve secops@motionpoint.com pending internal cxm teams group chat origin site customer security team close express critical 3 hours'],
  ['Support-Performance-Dashboard-guide', 'Reading the Support Performance Dashboard', 'What every number means: utilization, cases touched, Time to Start, missed TTS, and new and closed cases, with examples and how to meet each goal.', 'proc', 'performance dashboard utilization tts time to start kpi okr cases touched pace billable missed goals targets metrics'],
+  ['Support-Case-Quest', 'Graduation: Support Case Quest', 'You watched them all. Now prove it: 9 levels and 120 questions across every training, with points, streaks and a Boss Round. Pass every level to graduate.', 'grad', 'quiz quest graduation test knowledge check exam boss round levels points final'],
 ];
 const items = T.map((t, i) => ({ n: i + 1, slug: t[0], title: t[1], desc: t[2], topic: t[3], kw: t[4] }));
 const grid = document.getElementById('grid'), q = document.getElementById('q'), chips = document.getElementById('chips'),
@@ -162,7 +171,7 @@ const hl = (text, words) => {
   words.forEach((w) => { if (w.length < 2) return; const re = new RegExp('(' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'); out = out.replace(re, '<mark>$1</mark>'); });
   return out;
 };
-['all', ...Object.keys(TOPICS)].forEach((k) => {
+['all', ...Object.keys(TOPICS).filter((k) => k !== 'grad')].forEach((k) => {
   const b = document.createElement('button');
   b.type = 'button'; b.className = 'chip'; b.dataset.k = k;
   b.textContent = k === 'all' ? 'All trainings' : TOPICS[k];
@@ -173,8 +182,12 @@ const hl = (text, words) => {
 function render() {
   const words = q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
   clear.classList.toggle('on', q.value.length > 0);
-  const shown = items.filter((it) => (topic === 'all' || it.topic === topic) && words.every((w) => it.hay.includes(w)));
-  grid.innerHTML = shown.map((it) =>
+  const shown = items.filter((it) => (topic === 'all' || it.topic === topic || it.topic === 'grad') && words.every((w) => it.hay.includes(w)));
+  grid.innerHTML = shown.map((it) => it.topic === 'grad' ?
+    '<a class="card grad" data-topic="grad" href="' + BASE + it.slug + '/" target="_blank" rel="noopener">' +
+      '<span class="num cap" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg></span>' +
+      '<span class="body"><span class="tags"><span class="tag gradtag">Final step &middot; Graduation</span></span><h2 class="title">' + hl(it.ptitle, words) + '</h2>' +
+      '<p class="desc">' + hl(it.pdesc, words) + '</p><span class="gradcta">Take the quiz &rarr;</span></span></a>' :
     '<a class="card" data-topic="' + it.topic + '" href="' + BASE + it.slug + '/" target="_blank" rel="noopener">' +
       '<span class="num" aria-label="Training ' + it.n + '">' + it.n + '</span>' +
       '<span class="body"><h2 class="title">' + hl(it.ptitle, words) + '</h2>' +
@@ -182,7 +195,8 @@ function render() {
       '<span class="tags">' + (it.n === 1 ? '<span class="tag here">Start here</span>' : '') + '<span class="tag t-' + it.topic + '">' + TOPICS[it.topic] + '</span></span></span>' +
     '</a>').join('');
   empty.classList.toggle('on', shown.length === 0);
-  count.textContent = shown.length === items.length ? items.length + ' trainings' : 'Showing ' + shown.length + ' of ' + items.length + ' trainings';
+  const nt = items.filter((x) => x.topic !== 'grad').length, ns = shown.filter((x) => x.topic !== 'grad').length;
+  count.textContent = ns === nt ? nt + ' trainings, then graduation' : 'Showing ' + ns + ' of ' + nt + ' trainings';
 }
 q.addEventListener('input', render);
 clear.addEventListener('click', () => { q.value = ''; render(); q.focus(); });
